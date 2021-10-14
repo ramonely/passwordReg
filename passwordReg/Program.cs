@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace passwordReg
 {
@@ -17,12 +18,28 @@ namespace passwordReg
                 if (password.Any(char.IsUpper) && password.Any(char.IsNumber) && password.Any(char.IsLower)
                     && password.Length >= 7 && password.Length <= 12 == true)
                 {
-                    checker = false;
+                    Match special = Regex.Match(password, "[! @ # $ % ^ & *]");
+                    if (special.Success)
+                    {
+                        checker = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nThe password must contain at:\n" +
+                           "\nLeast one uppercase letter" +
+                           "\nMust contain at lest on (! @ # $ % ^ & *)" +
+                           "\nAt least one lowercase letter" +
+                           "\nAt least a minimum of 7 characters" +
+                           "\nNo more than 12 chracters" +
+                           "\n\nTry Again:");
+                        password = Console.ReadLine();
+                    }
                 }
                 else
                 {
                     Console.WriteLine("\nThe password must contain at:\n" +
                         "\nLeast one uppercase letter" +
+                        "\nMust contain at lest on (! @ # $ % ^ & *)" +
                         "\nAt least one lowercase letter" +
                         "\nAt least a minimum of 7 characters" +
                         "\nNo more than 12 chracters" +
@@ -42,7 +59,7 @@ namespace passwordReg
             while (checker)
             {
                 if (username.Any(char.IsUpper) && username.Any(char.IsNumber) && username.Any(char.IsLower)
-                    && username.Length >= 7 && username.Length <= 12 && username.Any(char.IsLetter) == true)
+                    && username.Length >= 7 && username.Length <= 12 && username.Any(char.IsLetter) && (username.Count(Char.IsLetter) >= 5) == true)
                 {
                     checker = false;
                 }
@@ -50,6 +67,8 @@ namespace passwordReg
                 {
                     Console.WriteLine("\nThe username must contain at:\n" +
                         "\nMust have at least 5 letters" +
+                        "\nLeast one uppercase letter" +
+                        "\nAt least one lowercase letter" +
                         "\nAt least one number" +
                         "\nAt least a minimum of 7 characters" +
                         "\nNo more than 12 chracters" +
@@ -61,11 +80,6 @@ namespace passwordReg
             return username;
         }
 
-        public static void another()
-        {
-            Console.WriteLine("Do you want the enter another username and ");
-        }
-
         private static void Main()
         {
             List<string> names = new List<string>();
@@ -74,9 +88,6 @@ namespace passwordReg
             bool checker = true;
             while (checker)
             {
-                // List<string> names = new List<string>();
-                // List<string> passes = new List<string>();
-
                 string username = getUser("Enter your new username:");
                 Console.WriteLine("");
                 string password = getPassword("Enter your new password:");
@@ -108,11 +119,10 @@ namespace passwordReg
             {
                 Console.WriteLine(string.Format($"{names[n],0}\t{passes[n],15}"));
             }
-
-            Console.WriteLine("\nTest when calling matching index:");
-            Console.WriteLine("\n==Username==\t==Password==\n");
-            Console.WriteLine(string.Format($"{names[2],0}\t{passes[2],15}"));
-            Console.WriteLine(string.Format($"{names[4],0}\t{passes[4],15}"));
+            //Console.WriteLine("\nTest when calling matching index:");
+            //Console.WriteLine("\n==Username==\t==Password==\n");
+            //Console.WriteLine(string.Format($"{names[2],0}\t{passes[2],15}"));
+            //Console.WriteLine(string.Format($"{names[4],0}\t{passes[4],15}"));
         }
     }
 }
